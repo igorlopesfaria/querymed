@@ -1,4 +1,4 @@
-# appdoctorline
+# QueryMed
 
 A new Flutter project.
 

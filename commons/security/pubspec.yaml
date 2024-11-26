@@ -1,0 +1,30 @@
+name: commons_security
+description: A Security Module containing all Interceptors and OAuth functionalities
+
+version: 1.0.0
+
+environment:
+  sdk: "3.5.4"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  commons_core:
+    path: ../core
+  commons_crash_report:
+    path: ../crash_report
+
+  equatable: ^2.0.5
+  flutter_bloc: 8.1.2
+  shimmer: 3.0.0
+  injectable: 2.5.0
+  get_it: 8.0.2
+  dio: 5.7.0
+  flutter_secure_storage: 9.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 5.0.0
+  build_runner: 2.4.13
+  injectable_generator: 2.6.2

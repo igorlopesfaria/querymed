@@ -1,0 +1,1 @@
+const badCredentialsCode = 700;

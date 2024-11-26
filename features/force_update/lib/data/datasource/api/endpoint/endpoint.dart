@@ -1,0 +1,1 @@
+const CHECK_FORCE_UPDATE_ENDPOINT = "/v1/checkForceUpdate/";

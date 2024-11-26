@@ -1,0 +1,72 @@
+name: appdoctorline
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: "3.5.4"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  commons_core:
+    path: commons/core
+  commons_crash_report:
+    path: commons/crash_report
+  commons_interceptors:
+    path: commons/interceptors
+  commons_navigation:
+    path: commons/navigation
+  commons_remote_config:
+    path: commons/remote_config
+  commons_security:
+    path: commons/security
+  commons_validator:
+    path: commons/validator
+  design_system_core:
+    path: design_system/core
+  design_system_components:
+    path: design_system/components
+  features_biometry:
+    path: features/biometry
+  features_help:
+    path: features/help
+  features_force_update:
+    path: features/force_update
+  features_login:
+    path: features/login
+  features_onboarding:
+    path: features/onboarding
+
+  injectable: 2.5.0
+  get_it: 8.0.2
+  equatable: 2.0.5
+  firebase_core: ^3.8.0
+  dio: 5.7.0
+  flutter_secure_storage: 9.2.2
+  firebase_crashlytics: ^4.1.5
+  local_auth: 2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 5.0.0
+  build_runner: 2.4.13
+  injectable_generator: 2.6.2
+
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: design_system/core/fonts/poppins/Poppins-Light.ttf
+          weight: 300
+        - asset: design_system/core/fonts/poppins/Poppins-Regular.ttf
+          weight: 400
+        - asset: design_system/core/fonts/poppins/Poppins-Bold.ttf
+          weight: 700
+        - asset: design_system/core/fonts/poppins/Poppins-Medium.ttf
+          weight: 500
+        - asset: design_system/core/fonts/poppins/Poppins-SemiBold.ttf
+          weight: 600

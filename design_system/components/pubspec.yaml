@@ -1,0 +1,35 @@
+name: design_system_components
+description: A Design System Components containing all custom widgets
+
+version: 1.0.0
+
+environment:
+  sdk: "3.5.4"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  design_system_core:
+    path: ../../design_system/core
+  brasil_fields: 1.15.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 5.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: ../../design_system/core/fonts/poppins/Poppins-Light.ttf
+          weight: 300
+        - asset: ../../design_system/core/fonts/poppins/Poppins-Regular.ttf
+          weight: 400
+        - asset: ../../design_system/core/fonts/poppins/Poppins-Medium.ttf
+          weight: 500
+        - asset: ../../design_system/core/fonts/poppins/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: ../../design_system/core/fonts/poppins/Poppins-Bold.ttf
+          weight: 700

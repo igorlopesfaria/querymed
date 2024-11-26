@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "434230592871",
+    "project_id": "appdoctorline",
+    "storage_bucket": "appdoctorline.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434230592871:android:61368ce5dc09e829811bc2",
+        "android_client_info": {
+          "package_name": "br.com.appdoctorline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpIF6yY61mu7qz2yAZ8svQkpFggiIYZWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

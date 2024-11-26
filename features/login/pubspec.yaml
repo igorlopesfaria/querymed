@@ -1,0 +1,44 @@
+name: features_login
+description: A Login Module
+
+version: 1.0.0
+
+environment:
+  sdk: "3.5.4"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  design_system_core:
+    path: ../../design_system/core
+  design_system_components:
+    path: ../../design_system/components
+  commons_core:
+    path: ../../commons/core
+  commons_navigation:
+    path: ../../commons/navigation
+  commons_crash_report:
+    path: ../../commons/crash_report
+  commons_remote_config:
+    path: ../../commons/remote_config
+  commons_security:
+    path: ../../commons/security
+  commons_validator:
+    path: ../../commons/validator
+  features_biometry:
+    path: ../biometry
+  equatable: ^2.0.5
+  flutter_bloc: 8.1.2
+  shimmer: 3.0.0
+  injectable: 2.5.0
+  get_it: 8.0.2
+  dio: 5.7.0
+  flutter_secure_storage: 9.2.2
+  local_auth: 2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 5.0.0
+  build_runner: 2.4.13
+  injectable_generator: 2.6.2

@@ -203,6 +203,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  commons_media_validation:
+    dependency: "direct main"
+    description:
+      path: "commons/media_validation"
+      relative: true
+    source: path
+    version: "1.0.0"
   commons_navigation:
     dependency: "direct main"
     description:
@@ -333,6 +340,13 @@ packages:
     dependency: "direct main"
     description:
       path: "features/onboarding"
+      relative: true
+    source: path
+    version: "1.0.0"
+  features_reset_password:
+    dependency: "direct main"
+    description:
+      path: "features/reset_password"
       relative: true
     source: path
     version: "1.0.0"

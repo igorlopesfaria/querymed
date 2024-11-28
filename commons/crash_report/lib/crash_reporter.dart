@@ -1,3 +1,4 @@
+import 'package:commons_core/exceptions/data_exception.dart';
 import 'package:commons_crash_report/components/firebase_crash_report_component.dart';
 import 'package:commons_crash_report/components/i_crash_report_component.dart';
 import 'package:commons_crash_report/i_crash_reporter.dart';
@@ -34,8 +35,15 @@ class CrashReport implements ICrashReport {
   @override
   Future<void> recordError(Exception exception, {StackTrace? stackTrace,
       String? reason, Map<String, Object>? customInfo}) async {
-    for (var element in components) {
-      element.recordError(exception, stackTrace: stackTrace, reason: reason, customInfo: customInfo);
+    if(exception is! DataApiInternetConnectionException || exception is! DataApiSeverForbiddenException) {
+      for (var element in components) {
+        element.recordError(
+            exception,
+            stackTrace: stackTrace,
+            reason: reason,
+            customInfo: customInfo
+        );
+      }
     }
   }
 

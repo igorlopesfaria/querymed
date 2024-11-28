@@ -38,5 +38,10 @@ class UnauthorizedException implements Exception {
   UnauthorizedException({this.cause});
 }
 
+class RequestedTooManyTimeException implements Exception {
+  String? cause;
+  RequestedTooManyTimeException({this.cause});
+}
+
 
 

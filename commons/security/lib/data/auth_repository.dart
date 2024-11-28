@@ -2,6 +2,7 @@
 import 'package:commons_core/exceptions/business_exception.dart';
 import 'package:commons_core/exceptions/data_exception.dart';
 import 'package:commons_core/result/result.dart';
+import 'package:commons_security/data/datasource/api/error_code/auth_error_message.dart';
 import 'package:commons_security/data/datasource/api/i_auth_api_datasource.dart';
 import 'package:commons_security/data/datasource/local/i_auth_local_datasource.dart';
 import 'package:commons_security/data/dto/request/auth_api_request.dart';
@@ -68,8 +69,10 @@ class AuthRepository implements IAuthRepository {
       return Success(data: authApiResponse.mapApiToModel);
     } on DataApiInternetConnectionException {
       return Failure(exception: ConnectionException());
-    } on DataApiBadResponseException {
-      return Failure(exception: BadCredentialsException());
+    } on DataApiBadResponseException catch (exception){
+      return exception.code == badCredentialsCode
+          ? Failure(exception: BadCredentialsException())
+          : Failure();
     } catch (e) {
       return Failure();
     }
@@ -85,6 +88,7 @@ class AuthRepository implements IAuthRepository {
     } on DataApiInternetConnectionException {
       return Failure(exception: ConnectionException());
     } on DataApiSeverForbiddenException {
+
       return Failure(exception: BadCredentialsException());
     } catch (e) {
       return Failure();

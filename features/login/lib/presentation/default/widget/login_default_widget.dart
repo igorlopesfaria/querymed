@@ -31,7 +31,7 @@ class LoginDefaultWidget extends StatefulWidget {
 
 class _LoginDefaultWidget extends State<LoginDefaultWidget> {
   final LoginDefaultCubit _cubit = GetIt.I.get<LoginDefaultCubit>();
-  // final LocalAuthentication auth = LocalAuthentication();
+
   final _token = DSTokenProvider().provide();
 
   @override
@@ -181,10 +181,11 @@ class _LoginDefaultWidget extends State<LoginDefaultWidget> {
                                         child: DSButtonWidget(
                                             text: LoginDefaultStrings.forgotPassword,
                                             onPressed: () {
-                                              // cubit.redirectForgotPassword(widget.loginUiModel.crm ?? '');
+                                              CommonNavigator.pushNamed(
+                                                  context,
+                                                  CommonRoutes.resetPasswordRoute
+                                              );
                                             },
-                                            // showLoading:
-                                            //     state is LoginRedirectLoadingState,
                                             type: DSButtonType.transparent)),
                         ]))
                     ),

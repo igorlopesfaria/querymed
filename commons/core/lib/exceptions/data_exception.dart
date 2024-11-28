@@ -1,5 +1,3 @@
-import 'package:commons_core/error_api_response/error_api_response.dart';
-
 class DataApiException implements Exception {
   String? cause;
   DataApiException({this.cause});
@@ -10,11 +8,9 @@ class DataDBException implements Exception {
   DataDBException({this.cause});
 }
 
-
 class DataApiBadResponseException implements Exception {
-  String? cause;
-  ErrorApiResponse? errorApiResponse;
-  DataApiBadResponseException({this.cause, this.errorApiResponse});
+  int? code;
+  DataApiBadResponseException({this.code});
 }
 
 class DataApiInternetConnectionException implements Exception {

@@ -20,14 +20,13 @@ class ValidatorRepository implements IValidatorRepository {
     } on DataApiInternetConnectionException {
       return Failure(exception: ConnectionException());
     } on DataApiBadResponseException catch (exception){
-      if (exception.errorApiResponse != null) {
-        switch (exception.errorApiResponse?.code) {
-          case invalidInputCode:
-            return Failure(exception: DuplicatedFieldException());
-          case duplicatedInputCode:
-            return Failure(exception: InvalidFieldException());
-        }
+      switch (exception.code) {
+        case invalidInputCode:
+          return Failure(exception: DuplicatedFieldException());
+        case duplicatedInputCode:
+          return Failure(exception: InvalidFieldException());
       }
+
       return Failure();
     } catch (e) {
       return Failure();

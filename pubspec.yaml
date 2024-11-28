@@ -15,6 +15,8 @@ dependencies:
     path: commons/crash_report
   commons_interceptors:
     path: commons/interceptors
+  commons_media_validation:
+    path: commons/media_validation
   commons_navigation:
     path: commons/navigation
   commons_remote_config:
@@ -37,6 +39,8 @@ dependencies:
     path: features/login
   features_onboarding:
     path: features/onboarding
+  features_reset_password:
+    path: features/reset_password
 
   injectable: 2.5.0
   get_it: 8.0.2

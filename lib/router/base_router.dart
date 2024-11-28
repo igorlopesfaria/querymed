@@ -11,6 +11,7 @@ import 'package:features_login/presentation/default/widget/login_default_widget.
 import 'package:features_onboarding/presentation/splash/widget/onboarding_splash_widget.dart';
 import 'package:features_onboarding/presentation/tutorial/widget/onboarding_tutorial_widget.dart';
 import 'package:features_onboarding/presentation/initial/widget/onboarding_initial_widget.dart';
+import 'package:features_reset_password/presentation/forms/reset_password_forms_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -73,6 +74,17 @@ class BaseRouter {
       case CommonRoutes.biometryRegisterRoute:
         return _getPageRoute(
             view: BiometryRegisterWidget(
+              clickHelpIcon: (context) {
+                showBottomSheetHelp(context);
+              },
+              showBannerError: (context, props) => {
+                showBottomSheetError(context, props)
+              },
+            ),
+            settings: settings);
+      case CommonRoutes.resetPasswordRoute:
+        return _getPageRoute(
+            view: ResetPasswordFormsWidget(
               clickHelpIcon: (context) {
                 showBottomSheetHelp(context);
               },

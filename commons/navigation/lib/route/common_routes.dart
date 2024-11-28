@@ -4,8 +4,11 @@ class CommonRoutes {
     forceUpdateRoute,
     onboardingSplashRoute,
     onboardingInitialRoute,
-    registerInitialRoute,
-    contractRoute
+    loginDefaultRoute,
+    contractRoute,
+    resetPasswordRoute,
+    resetPasswordVerifyCodeRoute,
+    resetPasswordChangePasswordRoute
   ];
 
   // force update
@@ -32,6 +35,12 @@ class CommonRoutes {
 
   //home
   static const String homeRoute = '/home';
+
+  // reset password
+  static const String resetPasswordRoute = '/resetPassword';
+  static const String resetPasswordUsernameRoute = '/resetPassword/username';
+  static const String resetPasswordVerifyCodeRoute = '/resetPassword/verifyCode';
+  static const String resetPasswordChangePasswordRoute = '/resetPassword/password';
 
 }
 

@@ -1,5 +1,5 @@
-import 'package:commons_core/error_api_response/error_api_response.dart';
 import 'package:commons_core/exceptions/data_exception.dart';
+import 'package:commons_core/extensions/exception.dart';
 import 'package:commons_crash_report/i_crash_reporter.dart';
 import 'package:commons_validator/data/datasource/api/i_validator_api_datasrouce.dart';
 import 'package:commons_validator/data/datasource/endpoint/endpoint.dart';
@@ -19,39 +19,18 @@ class ValidatorApiDataSource implements IValidatorApiDataSource {
       String fieldName, String value) async {
     try {
       final response = await _dio.get(
-          "$ENDPOINT_VALIDATION?$fieldName=${Uri.encodeComponent(value)}");
-
+          "$ENDPOINT_VALIDATION?$fieldName=${Uri.encodeComponent(value)}"
+      );
       if (response.statusCode != 200) {
-        throw DataApiException(cause: 'Unexpected status code: ${response.statusCode}');
+        throw DataApiException();
       }
-
-      return;
-
-    } on DioException catch (exception, stacktrace) {
-      switch (exception.type) {
-        case DioExceptionType.connectionError:
-        case DioExceptionType.connectionTimeout:
-        case DioExceptionType.unknown:
-          throw DataApiInternetConnectionException();
-        case DioExceptionType.badResponse:
-          final errorData = exception.response?.data;
-          if (errorData != null) {
-            throw DataApiBadResponseException(
-                errorApiResponse: ErrorApiResponse.fromJson(errorData)
-            );
-          }
-          _reporter.recordError(exception, stackTrace: stacktrace,
-              reason: "Unexpected ERROR on GET $ENDPOINT_VALIDATION",
-              customInfo: {"fieldName": fieldName, "value" : value }
-          );
-          throw DataApiException(cause: 'Bad response error: ${exception.response?.statusCode}');
-        default:
-          _reporter.recordError(exception, stackTrace: stacktrace,
-              reason: "Unexpected ERROR on GET $ENDPOINT_VALIDATION",
-              customInfo: {"fieldName": fieldName, "value" : value }
-          );
-          throw DataApiException(cause: 'Unexpected Dio error type: ${exception.type}');
-      }
+    } on Exception catch (exception, stacktrace){
+      _reporter.recordError(
+        exception,
+        stackTrace: stacktrace,
+        reason: "$ENDPOINT_VALIDATION?$fieldName=${Uri.encodeComponent(value)}",
+      );
+      throw exception.mapToCustomException();
     }
   }
 }

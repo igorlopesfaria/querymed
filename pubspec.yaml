@@ -29,6 +29,8 @@ dependencies:
     path: design_system/core
   design_system_components:
     path: design_system/components
+  features_address:
+    path: features/address
   features_biometry:
     path: features/biometry
   features_help:

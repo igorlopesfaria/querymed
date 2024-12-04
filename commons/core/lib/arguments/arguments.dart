@@ -1,6 +1,9 @@
 class Arguments {
-  final String title;
-  final Object message;
+  final String key;
+  final Object value;
 
-  Arguments(this.title, this.message);
+  Arguments({
+    required this.key,
+    required this.value
+  });
 }

@@ -28,14 +28,14 @@ class ResetPasswordFormsUsernameWidget extends StatefulWidget {
 }
 
 class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsernameWidget> {
-  final token = DSTokenProvider().provide();
+  final _token = DSTokenProvider().provide();
   final ResetPasswordFormsUsernameCubit cubit = GetIt.I.get<ResetPasswordFormsUsernameCubit>();
 
 
   @override
   Widget build(BuildContext context) {
     return PopScope(child: Scaffold(
-      backgroundColor: token.color.surface,
+      backgroundColor: _token.color.surface,
       body: BlocProvider.value(
         value: cubit,
         child: BlocConsumer<ResetPasswordFormsUsernameCubit, ResetPasswordFormsUsernameState>(
@@ -46,7 +46,8 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                     context,
                     CommonRoutes.resetPasswordVerifyCodeRoute,
                     arguments: Arguments(
-                        'mediaValidator', state.mediaValidation
+                        key: 'mediaValidator',
+                        value: state.mediaValidation
                     )
                 );
               } 
@@ -69,46 +70,49 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        left: token.spacing.sm,
-                                        right: token.spacing.sm,
-                                        top: token.spacing.xs
+                                        top: _token.spacing.xs,
+                                        left: _token.spacing.xs,
+                                        right: _token.spacing.xs
                                     ),
                                     child: DSTextWidget(
                                         text: ResetPasswordFormsUsernameStrings.title,
-                                        typographyColor: token.color.onSurfaceHigh,
+                                        typographyColor: _token.color.onSurfaceHigh,
                                         typographyStyle: DSTypographyStyleType.t20Medium
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        left: token.spacing.sm,
-                                        right: token.spacing.sm,
-                                        top: token.spacing.xxs
+                                        top: _token.spacing.xxxs,
+                                        left: _token.spacing.xs,
+                                        right: _token.spacing.xs
                                     ),
                                     child: DSTextWidget(
                                         textAlign: TextAlign.start,
                                         text: ResetPasswordFormsUsernameStrings.description,
-                                        typographyColor: token.color.onSurfaceMedium,
+                                        typographyColor: _token.color.onSurfaceHigh,
                                         typographyStyle: DSTypographyStyleType.t14Regular
                                     ),
                                   ),
 
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        left: token.spacing.sm,
-                                        right: token.spacing.sm,
-                                        top: token.spacing.xs
+                                        left: _token.spacing.xs,
+                                        right: _token.spacing.xs,
+                                        top: _token.spacing.xs
                                     ),
                                     child: DSTextFiledWidget(
                                         autofocus: true,
                                         controller: cubit.crmNumberControllerText,
-                                        keyboardType: TextInputType.emailAddress,
+                                        keyboardType: TextInputType.number,
                                         typeMask: DSTextFieldMaskType.empty,
                                         onTextChanged: (String text) => {
                                           cubit.checkCrmFormat()
                                         },
+                                        maxLength: 6,
+                                        hintText: ResetPasswordFormsUsernameStrings.crmNumber,
                                         messageError:
                                         (state is ResetPasswordFormsUsernameFieldErrorState)
                                             ? state.messageError : null,
@@ -122,23 +126,24 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                     Expanded(
                       flex: 0,
                       child: Align(
-                        alignment: FractionalOffset.bottomRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: token.spacing.sm,
-                              right: token.spacing.sm,
-                              bottom: token.spacing.xs
-                          ),
-                          child: DSButtonWidget(
-                            state: (state is! ResetPasswordFormsUsernameInitState && state is! ResetPasswordFormsUsernameFieldErrorState) ? DSButtonState.enabled : DSButtonState.disabled,
-                            type: DSButtonType.primary,
-                            showLoading: state is ResetPasswordFormsUsernameLoadingState,
-                            onPressed: () {
-                              cubit.getToken();
-                            },
-                            iconData: Icons.arrow_forward_ios_outlined,
-                          ),
-                        ),
+                        alignment: FractionalOffset.bottomCenter,
+                        child:
+                        SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                                padding: EdgeInsets.all(_token.spacing.xs),
+                                child: DSButtonWidget(
+                                    state: (state is! ResetPasswordFormsUsernameInitState && state is! ResetPasswordFormsUsernameFieldErrorState) ? DSButtonState.enabled : DSButtonState.disabled,
+                                    text: ResetPasswordFormsUsernameStrings.next,
+                                    showLoading: state is ResetPasswordFormsUsernameLoadingState,
+                                    onPressed: () {
+                                      CommonNavigator.pushNamed(
+                                          context,
+                                          CommonRoutes.biometryRegisterRoute
+                                      );
+                                      // _cubit.authentication();
+                                    },
+                                    type: DSButtonType.primary))),
                       ),
                     ),
                   ]),

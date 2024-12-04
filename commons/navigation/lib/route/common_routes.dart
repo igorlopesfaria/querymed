@@ -42,5 +42,7 @@ class CommonRoutes {
   static const String resetPasswordVerifyCodeRoute = '/resetPassword/verifyCode';
   static const String resetPasswordChangePasswordRoute = '/resetPassword/password';
 
+  static const String addressStateRoute = '/address/state';
+
 }
 

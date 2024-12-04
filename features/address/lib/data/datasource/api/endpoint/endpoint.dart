@@ -1,0 +1,1 @@
+const String CHECK_ADDRESS_STATE_ENDPOINT = "/v1/address/state";

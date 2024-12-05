@@ -2,10 +2,13 @@ import 'package:commons_core/arguments/arguments.dart';
 import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:commons_navigation/route/common_routes.dart';
 import 'package:design_system_components/button/button.dart';
+import 'package:design_system_components/cell/list/cell_list.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.dart';
+import 'package:design_system_components/select_list/select_list.dart';
 import 'package:design_system_components/text/text.dart';
 import 'package:design_system_components/textfield/textfield.dart';
 import 'package:design_system_core/token/ds_tokens_provider.dart';
+import 'package:features_address/domain/model/address_state.dart';
 import 'package:features_reset_password/presentation/forms/username/bloc/reset_password_forms_username_cubit.dart';
 import 'package:features_reset_password/presentation/forms/username/bloc/reset_password_forms_username_state.dart';
 import 'package:features_reset_password/presentation/forms/username/string/reset_password_forms_username_string.dart';
@@ -29,15 +32,20 @@ class ResetPasswordFormsUsernameWidget extends StatefulWidget {
 
 class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsernameWidget> {
   final _token = DSTokenProvider().provide();
-  final ResetPasswordFormsUsernameCubit cubit = GetIt.I.get<ResetPasswordFormsUsernameCubit>();
+  final ResetPasswordFormsUsernameCubit _cubit = GetIt.I.get<ResetPasswordFormsUsernameCubit>();
 
+  void _selectAddressState(AddressState newValue) {
+    setState(() {
+      _cubit.addressStateSelected = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(child: Scaffold(
       backgroundColor: _token.color.surface,
       body: BlocProvider.value(
-        value: cubit,
+        value: _cubit,
         child: BlocConsumer<ResetPasswordFormsUsernameCubit, ResetPasswordFormsUsernameState>(
           listener: (BuildContext context, state) {
             switch (state) {
@@ -53,7 +61,7 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
               } 
               case ResetPasswordFormsUsernameBannerErrorState() : {
                 state.bottomSheetProps.onButtonPressed = () {
-                  cubit.checkCrmFormat();
+                  _cubit.checkCrmFormat();
                 };
                 widget.showBottomSheetError(state.bottomSheetProps);
               }
@@ -96,31 +104,56 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                                         typographyStyle: DSTypographyStyleType.t14Regular
                                     ),
                                   ),
-
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: _token.spacing.xs,
-                                        right: _token.spacing.xs,
-                                        top: _token.spacing.xs
-                                    ),
-                                    child: DSTextFiledWidget(
-                                        autofocus: true,
-                                        controller: cubit.crmNumberControllerText,
-                                        keyboardType: TextInputType.number,
-                                        typeMask: DSTextFieldMaskType.empty,
-                                        onTextChanged: (String text) => {
-                                          cubit.checkCrmFormat()
-                                        },
-                                        maxLength: 6,
-                                        hintText: ResetPasswordFormsUsernameStrings.crmNumber,
-                                        messageError:
-                                        (state is ResetPasswordFormsUsernameFieldErrorState)
-                                            ? state.messageError : null,
-                                        textInputAction: TextInputAction.send,
-                                        onSubmitted: (value) {
-                                          cubit.getToken();
-                                        }),
-                                  )])
+                                  Padding(padding: EdgeInsets.only( left: _token.spacing.xs,
+                                      right: _token.spacing.xs,
+                                      top: _token.spacing.xs),
+                                    child:
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: DSTextFieldWidget(
+                                          autofocus: true,
+                                          controller: _cubit.crmNumberControllerText,
+                                          keyboardType: TextInputType.number,
+                                          typeMask: DSTextFieldMaskType.empty,
+                                          onTextChanged: (text) {
+                                            _cubit.checkCrmFormat();
+                                          },
+                                          maxLength: 6,
+                                          hintText: ResetPasswordFormsUsernameStrings.crmNumber,
+                                          messageError: (state is ResetPasswordFormsUsernameFieldErrorState)
+                                              ? state.messageError
+                                              : null,
+                                          textInputAction: TextInputAction.send,
+                                          onSubmitted: (_) {
+                                            _cubit.getToken();
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(width: _token.spacing.xxxs),
+                                      Expanded(
+                                        flex: 1,
+                                        child: DSSelectListWidget(
+                                          hint: ResetPasswordFormsUsernameStrings.crmState,
+                                          text: _cubit.addressStateSelected?.stateCode,
+                                          imagePathLeft: _cubit.addressStateSelected?.flagImagePath,
+                                          onPressed: () async {
+                                            final result = await CommonNavigator.pushNamed(
+                                              widget.parentContext,
+                                              CommonRoutes.addressStateRoute,
+                                              arguments: _cubit.addressStateSelected
+                                            );
+                                            if (result is AddressState) {
+                                              _selectAddressState(result);
+                                            }
+                                            _cubit.checkCrmFormat();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                ])
                         )
                     ),
                     Expanded(

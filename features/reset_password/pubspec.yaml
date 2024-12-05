@@ -27,6 +27,8 @@ dependencies:
     path: ../../commons/security
   commons_validator:
     path: ../../commons/validator
+  features_address:
+    path: ../address
   features_biometry:
     path: ../biometry
   equatable: ^2.0.5

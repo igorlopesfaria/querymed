@@ -36,7 +36,7 @@ class _OnboardingSplashWidget extends State<OnboardingSplashWidget> {
                   } else if (state is OnboardingSplashUserNotRegisteredState) {
                     route = state.isFirstAccess
                         ? CommonRoutes.onboardingTutorialRoute
-                        : CommonRoutes.addressStateRoute; //CommonRoutes.onboardingInitialRoute;
+                        : CommonRoutes.onboardingInitialRoute;
                   }
 
                   if (route != null) {

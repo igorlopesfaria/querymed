@@ -74,10 +74,6 @@ class _HelpWidget extends State<HelpWidget>   with TickerProviderStateMixin{
                           },
                         )
                     )
-                    // Image(
-                    //   alignment: Alignment.topLeft,
-                    //   image: AssetImage(token.assets.imHelp),
-                    // ),
                   ),
                   Padding(
                       padding: EdgeInsets.only(

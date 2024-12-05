@@ -3,6 +3,7 @@ import 'package:commons_core/result/result.dart';
 import 'package:commons_media_validation/domain/usecase/media_validation_get_token_usecase.dart';
 import 'package:commons_validator/domain/usecase/validate_crm_usecase.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.callback.dart';
+import 'package:features_address/domain/model/address_state.dart';
 import 'package:features_reset_password/presentation/forms/username/bloc/reset_password_forms_username_state.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,9 +20,14 @@ class ResetPasswordFormsUsernameCubit extends Cubit<ResetPasswordFormsUsernameSt
   final ValidateCrmUseCase _validateCrmUseCase;
   final MediaValidationGetTokenUseCase _getTokenUseCase;
   TextEditingController crmNumberControllerText = TextEditingController(text: '');
+  AddressState? addressStateSelected;
 
   Future checkCrmFormat() async {
-    String crmNumber = crmNumberControllerText.text;
+    final stateCode = addressStateSelected?.stateCode;
+    if (stateCode == null) {
+      return;
+    }
+    final crmNumber = "${crmNumberControllerText.text}/$stateCode";
     if (await _validateCrmUseCase.invoke(crmNumber, false) is Success) {
       emit(ResetPasswordFormsUsernameValidState());
     }

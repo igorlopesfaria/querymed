@@ -3,6 +3,8 @@ import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:commons_navigation/route/common_routes.dart';
 import 'package:design_system_components/bottomsheet/bottom_sheet.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.dart';
+import 'package:features_address/domain/model/address_state.dart';
+import 'package:features_address/presentation/state/bloc/address_state_list_cubit.dart';
 import 'package:features_address/presentation/state/widget/address_state_list_widget.dart';
 import 'package:features_biometry/presentation/widget/biometry_register_widget.dart';
 import 'package:features_force_update/presentation/widget/force_update_widget.dart';
@@ -97,12 +99,7 @@ class BaseRouter {
       case CommonRoutes.addressStateRoute:
         return _getPageRoute(
             view: AddressStateListWidget(
-              // clickHelpIcon: (context) {
-              //   showBottomSheetHelp(context);
-              // },
-              // showBannerError: (context, props) => {
-              //   showBottomSheetError(context, props)
-              // },
+              addressDetailed: (settings.arguments!=null) ? (settings.arguments as AddressState): null,
             ),
             settings: settings);
 

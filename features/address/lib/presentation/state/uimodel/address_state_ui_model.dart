@@ -28,3 +28,14 @@ extension AddressStateMapper on AddressState {
     );
   }
 }
+
+extension AddressStateUiMapper on AddressStateUiModel {
+  AddressState get mapToModel {
+    return AddressState(
+        stateName: stateName,
+        stateCode: stateCode,
+        flagImagePath: flagImagePath
+    );
+  }
+}
+

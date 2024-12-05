@@ -147,7 +147,7 @@ class _LoginDefaultWidget extends State<LoginDefaultWidget> {
                                         left: _token.spacing.xs,
                                         right: _token.spacing.xs,
                                         top: _token.spacing.xs),
-                                    child: DSTextFiledWidget(
+                                    child: DSTextFieldWidget(
                                       controller: _cubit.controllerTextEmail,
                                       hintText: LoginDefaultStrings.email,
                                       keyboardType: TextInputType.emailAddress,
@@ -163,7 +163,7 @@ class _LoginDefaultWidget extends State<LoginDefaultWidget> {
                                         left: _token.spacing.xs,
                                         right: _token.spacing.xs,
                                         top: _token.spacing.xs),
-                                    child: DSTextFiledWidget(
+                                    child: DSTextFieldWidget(
                                       controller: _cubit.controllerTextPassword,
                                       hintText: LoginDefaultStrings.password,
                                       isPassword: true,

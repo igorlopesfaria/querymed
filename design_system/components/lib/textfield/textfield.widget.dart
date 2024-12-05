@@ -2,8 +2,8 @@ import 'package:design_system_components/textfield/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DSTextFiledWidget extends StatefulWidget {
-  DSTextFiledWidget({
+class DSTextFieldWidget extends StatefulWidget {
+  DSTextFieldWidget({
     super.key,
     int? maxLength,
     String hintText = '',
@@ -41,12 +41,12 @@ class DSTextFiledWidget extends StatefulWidget {
   );
 
   @override
-  State<DSTextFiledWidget> createState() => _DSTextFiledWidget();
+  State<DSTextFieldWidget> createState() => _DSTextFiledWidget();
 
   final DSTextFieldProps props;
 }
 
-class _DSTextFiledWidget extends State<DSTextFiledWidget> {
+class _DSTextFiledWidget extends State<DSTextFieldWidget> {
   final style = DSTextFieldStyle();
   
   late bool showPasswordText;

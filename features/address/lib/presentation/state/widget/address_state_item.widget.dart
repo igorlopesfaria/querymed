@@ -34,16 +34,7 @@ class _AddressStateItemWidget extends State<AddressStateItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Radio<AddressStateUiModel>(
-              fillColor: WidgetStateColor.resolveWith(
-                (states) => token.color.secondary
-              ),
-              value: widget.addressStateItem,
-              onChanged: (value) {
-                widget.itemSelectedListener(value!);
-              },
-              groupValue: widget.addressStateItemSelected,
-            ),
+
             SizedBox(
                 height: 30,
                 width: 40,
@@ -51,23 +42,34 @@ class _AddressStateItemWidget extends State<AddressStateItemWidget> {
                     widget.addressStateItem.flagImagePath
 
                 )),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: _token.spacing.xxs
+                ),
+                child: DSTextWidget(
+                    text: '${widget.addressStateItem.stateName} - ${widget.addressStateItem.stateCode}',
+                    textAlign: TextAlign.left,
+                    typographyColor: _token.color.onSurfaceHigh,
+                    typographyStyle:
+                    DSTypographyStyleType.t16Medium
+                )),
                 Expanded(
                   flex: 1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: _token.spacing.xxs
+                      Radio<AddressStateUiModel>(
+                        fillColor: WidgetStateColor.resolveWith(
+                                (states) => token.color.secondaryDark
                         ),
-                      child: DSTextWidget(
-                        text: '${widget.addressStateItem.stateName} - ${widget.addressStateItem.stateCode}',
-                        textAlign: TextAlign.left,
-                        typographyColor: _token.color.onSurfaceHigh,
-                        typographyStyle:
-                        DSTypographyStyleType.t16Medium
-                      )),
+                        value: widget.addressStateItem,
+                        onChanged: (value) {
+                          widget.itemSelectedListener(value!);
+                        },
+                        groupValue: widget.addressStateItemSelected,
+                      ),
+
                     ]
                   )
                 ),

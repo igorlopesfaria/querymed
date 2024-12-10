@@ -58,7 +58,7 @@ class _DSFeedbackBottomSheetWidget extends State<DSFeedbackBottomSheetWidget> wi
                   _style.getAnimationByType(widget.props.type),
                   decoder: customDecoder,
                   controller: _controller,
-                  height: 200,
+                  height: (widget.props.type == DSFeedbackBottomSheetType.fatalError) ?   200 : 70,
                   fit: BoxFit.fill,
                   onLoaded: (composition) {
                     _controller..duration = composition.duration
@@ -70,6 +70,7 @@ class _DSFeedbackBottomSheetWidget extends State<DSFeedbackBottomSheetWidget> wi
           ),
           Padding(
             padding: EdgeInsets.only(
+                top: (widget.props.type == DSFeedbackBottomSheetType.fatalError) ? 0 :_style.token.spacing.xs,
                 left: _style.token.spacing.xs,
                 right: _style.token.spacing.xs
             ),
@@ -99,7 +100,7 @@ class _DSFeedbackBottomSheetWidget extends State<DSFeedbackBottomSheetWidget> wi
               child: Padding(
                   padding: EdgeInsets.symmetric(
                       vertical: _style.token.spacing.xs,
-                      horizontal: _style.token.spacing.sm
+                      horizontal: _style.token.spacing.xs
                   ),
                   child: DSButtonWidget(
                       text: widget.props.buttonText,

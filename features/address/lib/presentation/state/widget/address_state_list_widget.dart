@@ -1,6 +1,7 @@
 
 import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:design_system_components/appbar/appbar.dart';
+import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.callback.dart';
 import 'package:design_system_components/text/text.dart';
 import 'package:design_system_components/textfield/textfield.dart';
 import 'package:design_system_core/token/ds_tokens_provider.dart';
@@ -15,12 +16,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class AddressStateListWidget extends StatefulWidget {
-  AddressStateListWidget({
+  const AddressStateListWidget({
     super.key,
     this.addressDetailed
   });
 
-  AddressState? addressDetailed;
+  final AddressState? addressDetailed;
 
   @override
   State<StatefulWidget> createState() => _AddressStateListWidget();
@@ -36,7 +37,6 @@ class _AddressStateListWidget extends State<AddressStateListWidget> {
     setState(() {
       _addressStateSelected = currentValue;
     });
-    Navigator.pop(context, currentValue.mapToModel);
   }
 
   @override
@@ -46,9 +46,7 @@ class _AddressStateListWidget extends State<AddressStateListWidget> {
 
     if (widget.addressDetailed != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _addressStateSelected = widget.addressDetailed!.mapToUiModel;
-        });
+       selectAddressState(widget.addressDetailed!.mapToUiModel);
       });
     }
   }
@@ -107,31 +105,33 @@ class _AddressStateListWidget extends State<AddressStateListWidget> {
                               left: _token.spacing.xs,
                               right: _token.spacing.xs,
                               top: _token.spacing.xs),
-                          child: DSTextFieldWidget(
-                            messageError: null,
-                            controller: _cubit.searchControllerText,
-                            leadingIcon: Icon(
-                              Icons.search,
-                              color: _token.color.onSurfaceMedium,
+                          child:
+                            DSTextFieldWidget(
+                              enable: (state is AddressStateListSuccessState || state is AddressStateListEmptyState),
+                              messageError: null,
+                              controller: _cubit.searchControllerText,
+                              leadingIcon: Icon(
+                                Icons.search,
+                                color: _token.color.onSurfaceMedium,
+                              ),
+                              trailingIcon: _cubit.searchControllerText.text
+                                  .isNotEmpty ? Icon(
+                                Icons.cancel_outlined,
+                                color: _token.color.onSurfaceMedium,
+                              ) : null,
+                              trailingIconClick: () {
+                                _cubit.searchControllerText.text = "";
+                                _cubit.filterAddressStateByText();
+                              },
+                              keyboardType: TextInputType.text,
+                              hintText: AddressStateListStrings.hintText1,
+                              onTextChanged: (text) {
+                                _cubit.filterAddressStateByText();
+                              },
                             ),
-                            trailingIcon: _cubit.searchControllerText.text
-                                .isNotEmpty ? Icon(
-                              Icons.cancel_outlined,
-                              color: _token.color.onSurfaceMedium,
-                            ) : null,
-                            trailingIconClick: () {
-                              _cubit.searchControllerText.text = "";
-                              _cubit.filterAddressStateByText();
-                            },
-                            keyboardType: TextInputType.text,
-                            hintText: AddressStateListStrings.hintText1,
-                            onTextChanged: (text) {
-                              _cubit.filterAddressStateByText();
-                            },
-                          ),
                         ),
-                        state is AddressStateListErrorState ?
-                        buildErrorStateWidget() : Container(),
+                        state is AddressStateListEmptyState || state is AddressStateListInternetErrorState || state is AddressStateListGenericErrorState ?
+                        buildErrorStateWidget(state) : Container(),
                         state is AddressStateListLoadingState ?
                         buildLoadingWidget() : Container(),
                         state is AddressStateListSuccessState
@@ -164,6 +164,7 @@ class _AddressStateListWidget extends State<AddressStateListWidget> {
               addressStateItemSelected: _addressStateSelected,
               itemSelectedListener: (item) {
                 selectAddressState(item);
+                Navigator.pop(context, item.mapToModel);
               },
             );
           },
@@ -188,7 +189,7 @@ class _AddressStateListWidget extends State<AddressStateListWidget> {
         ));
   }
 
-  Expanded buildErrorStateWidget() {
+  Expanded buildErrorStateWidget(AddressStateListState state) {
     return Expanded(
         child: Padding(
           padding: EdgeInsets.only(top: _token.spacing.xs),
@@ -198,26 +199,85 @@ class _AddressStateListWidget extends State<AddressStateListWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.error_outline, // Use any icon from the Icons class
-                  color: Colors.black,
-                  size: 48.0,
-                ),
+                getStateErrorIcon(state),
                 Padding(
                   padding: EdgeInsets.only(
-                      top: _token.spacing.xxxs),
-                  child: DSTextWidget(
-                      text: AddressStateListStrings
-                          .searchEmpty,
-                      typographyColor:
-                      _token.color.onSurfaceHigh,
-                      typographyStyle:
-                      DSTypographyStyleType
-                          .t14Medium),
+                    top: _token.spacing.xxs,
+                    left: _token.spacing.xs,
+                    right:  _token.spacing.xs,
+                  ),
+                  child: getStateErrorTitle(state)
+                ),
+                Padding(
+                    padding: EdgeInsets.only(
+                      top: _token.spacing.xxxs,
+                      left: _token.spacing.xs,
+                      right:  _token.spacing.xs,
+                    ),
+                    child: getStateErrorDescription(state)
                 ),
               ],
             ),
           ),
         ));
   }
+
+  Icon getStateErrorIcon(AddressStateListState state) {
+    IconData iconData;
+
+    if (state is AddressStateListEmptyState) {
+      iconData = Icons.search_off;
+    } else if (state is AddressStateListInternetErrorState) {
+      iconData = Icons.signal_wifi_connected_no_internet_4;
+    } else {
+      iconData = Icons.error_outline;
+    }
+
+    return Icon(
+      iconData,
+      color: _token.color.onSurfaceHigh,
+      size: 48.0,
+    );
+  }
+
+  DSTextWidget getStateErrorTitle(AddressStateListState state) {
+    String text;
+
+    if (state is AddressStateListEmptyState) {
+      text = AddressStateListStrings.searchEmptyTitle;
+    } else if (state is AddressStateListInternetErrorState) {
+      text = DSFeedbackBottomSheetGenericErrorString.title;
+    } else {
+      text = DSFeedbackBottomSheetGenericErrorString.title;
+    }
+
+    return DSTextWidget(
+            text: text,
+            typographyColor:
+            _token.color.onSurfaceHigh,
+            typographyStyle:
+            DSTypographyStyleType
+                .t16Medium);
+  }
+  DSTextWidget getStateErrorDescription(AddressStateListState state) {
+    String text;
+
+    if (state is AddressStateListEmptyState) {
+      text = AddressStateListStrings.searchEmptyDescription;
+    } else if (state is AddressStateListInternetErrorState) {
+      text = DSFeedbackBottomSheetGenericErrorString.description;
+    } else {
+      text = DSFeedbackBottomSheetGenericErrorString.description;
+    }
+
+    return DSTextWidget(
+        text: text,
+        textAlign: TextAlign.center,
+        typographyColor:
+        _token.color.onSurfaceHigh,
+        typographyStyle:
+        DSTypographyStyleType
+            .t14Regular);
+  }
+
 }

@@ -7,23 +7,31 @@ import 'package:commons_validator/domain/repository/i_validator_repository.dart'
 @Injectable()
 class ValidateCrmUseCase {
   final IValidatorRepository repository;
-  final RegExp crmPattern = RegExp(r'^\d{1,6}/[A-Z]{2}$'); // Matches up to 6 digits followed by /XX (state)
+
+  // Matches 5-6 digits followed by /XX (state)
+  final RegExp crmPattern = RegExp(r'^\d{5,6}/[A-Z]{2}$');
 
   ValidateCrmUseCase(this.repository);
 
   Future<Result> invoke(String crm, bool verifyIsUnique) async {
-    if (crm.trim().isEmpty) {
+    // Trim input to remove leading or trailing whitespace
+    final trimmedCrm = crm.trim();
+
+    // Check for empty CRM
+    if (trimmedCrm.isEmpty) {
       return Failure(exception: EmptyFieldException());
     }
 
-    if (!crmPattern.hasMatch(crm)) {
+    // Check for invalid CRM format
+    if (!crmPattern.hasMatch(trimmedCrm)) {
       return Failure(exception: InvalidFieldException());
     }
 
+    // Verify uniqueness if required
     if (verifyIsUnique) {
-      return repository.validateField(crmField, crm);
-    } else {
-      return Success();
+      return repository.validateField(crmField, trimmedCrm);
     }
+
+    return Success();
   }
 }

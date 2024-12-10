@@ -41,10 +41,9 @@ class ResetPasswordFormsUsernameBannerErrorState extends ResetPasswordFormsUsern
 
 class ResetPasswordFormsUsernameFieldErrorState
     extends ResetPasswordFormsUsernameState {
-  ResetPasswordFormsUsernameFieldErrorState(this.messageError);
+  ResetPasswordFormsUsernameFieldErrorState();
 
-  final String messageError;
   @override
-  List<Object?> get props => [messageError];
+  List<Object?> get props => [];
 }
 

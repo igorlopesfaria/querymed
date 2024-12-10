@@ -33,13 +33,10 @@ class AddressStateListCubit extends Cubit<AddressStateListState> {
         return;
       }
       case (Failure failure) when failure.exception is ConnectionException :
-        emit(AddressStateListBannerErrorState(
-            bottomSheetProps: getConnectionBannerErrorProps()));
+        emit(AddressStateListInternetErrorState());
         return;
       case (Failure _) :
-        emit(AddressStateListBannerErrorState(
-            bottomSheetProps: getGenericBannerErrorProps()
-        ));
+        emit(AddressStateListGenericErrorState());
         return;
     }
 
@@ -56,7 +53,7 @@ class AddressStateListCubit extends Cubit<AddressStateListState> {
     if (listFiltered.isNotEmpty) {
       emit(AddressStateListSuccessState(addressStateList: listFiltered));
     } else {
-      emit(AddressStateListErrorState());
+      emit(AddressStateListEmptyState());
     }
   }
   

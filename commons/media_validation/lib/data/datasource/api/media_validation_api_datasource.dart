@@ -22,7 +22,7 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
   @override
   Future verifyCode(MediaValidationVerifyCodeApiRequest request) async {
     try{
-      final response = (await _dio.post("$ENDPOINT_MIDIA_VALIDATIONS/${request.token}",
+      final response = (await _dio.post("$ENDPOINT_MEDIA_VALIDATIONS/${request.token}",
           data: request.toJson()));
       if(response.statusCode != 200) {
         throw DataApiException();
@@ -35,7 +35,7 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
           throw DataApiInternetConnectionException();
         case DioExceptionType.badResponse:
           _reporter.recordError(exception, stackTrace: stacktrace,
-            reason: "Unexpected ERROR on POST $ENDPOINT_MIDIA_VALIDATIONS",
+            reason: "Unexpected ERROR on POST $ENDPOINT_MEDIA_VALIDATIONS",
           );
           if (exception.response?.data?.errorData != null) {
             throw DataApiBadResponseException(
@@ -47,7 +47,7 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
           throw DataApiException();
         default:
           _reporter.recordError(exception, stackTrace: stacktrace,
-              reason: "Unexpected ERROR on POST $ENDPOINT_MIDIA_VALIDATIONS / ${request.token}",
+              reason: "Unexpected ERROR on POST $ENDPOINT_MEDIA_VALIDATIONS / ${request.token}",
           );
           throw DataApiException();
       }
@@ -58,7 +58,7 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
   Future<MediaValidationApiResponse> getToken(MediaValidationApiRequest request) async {
     try {
       final response = (await _dio.post(
-          ENDPOINT_MIDIA_VALIDATIONS, data: request.toJson()));
+          ENDPOINT_MEDIA_VALIDATIONS, data: request.toJson()));
       if (response.statusCode == 200 || response.statusCode == 201) {
         return MediaValidationApiResponse.fromJson(response.data);
       }
@@ -71,7 +71,7 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
           throw DataApiInternetConnectionException();
         case DioExceptionType.badResponse:
           _reporter.recordError(exception, stackTrace: stacktrace,
-            reason: "Unexpected ERROR on POST $ENDPOINT_MIDIA_VALIDATIONS",
+            reason: "Unexpected ERROR on POST $ENDPOINT_MEDIA_VALIDATIONS",
           );
           if (exception.response?.data?.errorData != null) {
             final error = ErrorApiResponse.fromJson(exception.response!.data.errorData);
@@ -80,7 +80,7 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
           throw DataApiException();
         default:
           _reporter.recordError(exception, stackTrace: stacktrace,
-              reason: "Unexpected ERROR on POST $ENDPOINT_MIDIA_VALIDATIONS",
+              reason: "Unexpected ERROR on POST $ENDPOINT_MEDIA_VALIDATIONS",
               customInfo: {"resource": request.resource, "media": request.media}
           );
           throw DataApiException();

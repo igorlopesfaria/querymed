@@ -21,18 +21,25 @@ class AddressStateListSuccessState extends AddressStateListState {
   @override
   List<Object?> get props => [addressStateList];
 }
-class AddressStateListBannerErrorState extends AddressStateListState {
 
-  AddressStateListBannerErrorState({required this.bottomSheetProps});
+class AddressStateListInternetErrorState extends AddressStateListState {
 
-  final DSFeedbackBottomSheetProps bottomSheetProps;
+  AddressStateListInternetErrorState();
 
   @override
-  List<Object?> get props => [bottomSheetProps];
+  List<Object?> get props => [];
+}
+
+class AddressStateListGenericErrorState extends AddressStateListState {
+
+  AddressStateListGenericErrorState();
+
+  @override
+  List<Object?> get props => [];
 }
 
 
-class AddressStateListErrorState extends AddressStateListState {
+class AddressStateListEmptyState extends AddressStateListState {
   @override
   List<Object?> get props => [];
 }

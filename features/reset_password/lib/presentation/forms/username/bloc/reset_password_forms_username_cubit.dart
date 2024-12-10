@@ -30,6 +30,8 @@ class ResetPasswordFormsUsernameCubit extends Cubit<ResetPasswordFormsUsernameSt
     final crmNumber = "${crmNumberControllerText.text}/$stateCode";
     if (await _validateCrmUseCase.invoke(crmNumber, false) is Success) {
       emit(ResetPasswordFormsUsernameValidState());
+    } else {
+      emit(ResetPasswordFormsUsernameFieldErrorState());
     }
   }
 

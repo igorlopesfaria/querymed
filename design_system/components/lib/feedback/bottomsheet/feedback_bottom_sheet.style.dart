@@ -14,4 +14,14 @@ class DSFeedbackBottomSheetStyle {
         return token.assets.imConnectionError;
     }
   }
+
+  String getAnimationByType(DSFeedbackBottomSheetType type) {
+    switch (type) {
+      case DSFeedbackBottomSheetType.fatalError:
+        return token.assets.animFatalError;
+      case DSFeedbackBottomSheetType.connectionError:
+        return token.assets.animConnectionError;
+    }
+  }
+
 }

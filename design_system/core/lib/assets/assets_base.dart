@@ -16,5 +16,7 @@ abstract class AssetsBase {
   late String animForceUpdate;
   late String animHelp;
   late String animBiometry;
+  late String animFatalError;
+  late String animConnectionError;
 
 }

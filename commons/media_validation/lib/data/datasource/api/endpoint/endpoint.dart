@@ -1,1 +1,1 @@
-const ENDPOINT_MIDIA_VALIDATIONS = "/v1/midia-validations";
+const ENDPOINT_MEDIA_VALIDATIONS = "/v1/media-validations";

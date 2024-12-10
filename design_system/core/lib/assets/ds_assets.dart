@@ -50,5 +50,11 @@ class DSAssets implements AssetsBase {
   String get animBiometry => "$_path/animation/biometry.lottie";
 
   @override
+  String get animFatalError => "$_path/animation/generic_error.lottie";
+
+  @override
+  String get animConnectionError => "$_path/animation/connection_error.lottie";
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

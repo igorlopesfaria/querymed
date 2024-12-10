@@ -122,9 +122,6 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                                           },
                                           maxLength: 6,
                                           hintText: ResetPasswordFormsUsernameStrings.crmNumber,
-                                          messageError: (state is ResetPasswordFormsUsernameFieldErrorState)
-                                              ? state.messageError
-                                              : null,
                                           textInputAction: TextInputAction.send,
                                           onSubmitted: (_) {
                                             _cubit.getToken();
@@ -174,7 +171,7 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                                           context,
                                           CommonRoutes.biometryRegisterRoute
                                       );
-                                      // _cubit.authentication();
+                                      _cubit.getToken();
                                     },
                                     type: DSButtonType.primary))),
                       ),

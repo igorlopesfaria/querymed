@@ -11,6 +11,7 @@ class DSTextFieldWidget extends StatefulWidget {
     bool enable = true,
     bool autofocus = false,
     bool? isPassword = false,
+    TextAlign textAlign = TextAlign.left,
     TextEditingController? controller,
     DSTextFieldMaskType? typeMask = DSTextFieldMaskType.empty,
     TextInputType? keyboardType = TextInputType.text,
@@ -20,13 +21,15 @@ class DSTextFieldWidget extends StatefulWidget {
     Function()? trailingIconClick,
     Function(String)? onSubmitted,
     Function(String)? onTextChanged,
-    TextCapitalization textCapitalization = TextCapitalization.none
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    FocusNode? focusNode
   }) : props = DSTextFieldProps(
     hintText: hintText,
     autofocus: autofocus,
     messageError: messageError,
     enable: enable,
     isPassword: isPassword,
+    textAlign: textAlign,
     typeMask: typeMask,
     controller: controller,
     keyboardType: keyboardType,
@@ -62,11 +65,10 @@ class _DSTextFiledWidget extends State<DSTextFieldWidget> {
     });
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: widget.props.focusNode, // Use the passed FocusNode here
       maxLength: widget.props.maxLength,
       onChanged: (text) {
         widget.props.onTextChanged?.call(text);
@@ -91,7 +93,7 @@ class _DSTextFiledWidget extends State<DSTextFieldWidget> {
       cursorColor: style.cursorColor,
       obscureText: showPasswordText,
       textInputAction: widget.props.textInputAction,
-      textAlign: TextAlign.left,
+      textAlign: widget.props.textAlign,
       decoration: InputDecoration(
         hintText: widget.props.hintText,
         prefixIcon: widget.props.leadingIcon,
@@ -112,9 +114,10 @@ class _DSTextFiledWidget extends State<DSTextFieldWidget> {
           color: widget.props.messageError == null || widget.props.messageError == ''
               ? style.token.color.onSurfaceLow : style.token.color.danger,
         ),
-        contentPadding: EdgeInsets.symmetric(
-            vertical: style.verticalPadding,
-            horizontal: style.horizontalPadding),
+        contentPadding: EdgeInsets.only(
+            left: widget.props.textAlign == TextAlign.center? 3 : style.horizontalPadding,
+          right: widget.props.textAlign == TextAlign.center? 0 : style.horizontalPadding
+        ),
         filled: true,
         fillColor: style.backgroundColor,
         border: OutlineInputBorder(

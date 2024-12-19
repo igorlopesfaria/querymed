@@ -2,7 +2,6 @@ import 'package:commons_core/arguments/arguments.dart';
 import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:commons_navigation/route/common_routes.dart';
 import 'package:design_system_components/button/button.dart';
-import 'package:design_system_components/cell/list/cell_list.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.dart';
 import 'package:design_system_components/select_list/select_list.dart';
 import 'package:design_system_components/text/text.dart';
@@ -167,10 +166,6 @@ class _ResetPasswordFormsUsernameWidget extends State<ResetPasswordFormsUsername
                                     text: ResetPasswordFormsUsernameStrings.next,
                                     showLoading: state is ResetPasswordFormsUsernameLoadingState,
                                     onPressed: () {
-                                      CommonNavigator.pushNamed(
-                                          context,
-                                          CommonRoutes.biometryRegisterRoute
-                                      );
                                       _cubit.getToken();
                                     },
                                     type: DSButtonType.primary))),

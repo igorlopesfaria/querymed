@@ -7,6 +7,7 @@ class DSTextFieldProps {
     required this.enable,
     required this.textCapitalization,
     this.messageError,
+    required this.textAlign,
     this.isPassword,
     this.typeMask,
     this.controller,
@@ -18,6 +19,7 @@ class DSTextFieldProps {
     this.onSubmitted,
     this.onTextChanged,
     this.maxLength,
+    this.focusNode
   });
 
   final TextCapitalization textCapitalization;
@@ -27,6 +29,7 @@ class DSTextFieldProps {
   final String hintText;
   final bool? isPassword;
   final String? messageError;
+  final TextAlign textAlign;
   final DSTextFieldMaskType? typeMask;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
@@ -36,6 +39,7 @@ class DSTextFieldProps {
   final Function()? trailingIconClick;
   final Function(String)? onSubmitted;
   final Function(String)? onTextChanged;
+  final FocusNode? focusNode; // New parameter
 
 }
 

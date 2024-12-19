@@ -216,15 +216,4 @@ class _LoginDefaultWidget extends State<LoginDefaultWidget> {
             })));
   }
 
-  // void showForgotPasswordBottomSheet(BuildContext context) {
-  //   showDSBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return ResetPasswordPasswordWidget(
-  //           crm: cubit.crm,
-  //         );
-  //       });
-  // }
-
-
 }

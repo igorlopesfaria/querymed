@@ -26,6 +26,8 @@ import 'package:features_reset_password/domain/usecase/update_password_usecase.d
     as _i971;
 import 'package:features_reset_password/presentation/forms/username/bloc/reset_password_forms_username_cubit.dart'
     as _i32;
+import 'package:features_reset_password/presentation/forms/verify_code/bloc/reset_password_forms_verify_code_cubit.dart'
+    as _i803;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -40,6 +42,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i803.ResetPasswordFormsVerifyCodeCubit>(
+        () => _i803.ResetPasswordFormsVerifyCodeCubit());
     gh.factory<_i32.ResetPasswordFormsUsernameCubit>(
         () => _i32.ResetPasswordFormsUsernameCubit(
               gh<_i1061.ValidateCrmUseCase>(),

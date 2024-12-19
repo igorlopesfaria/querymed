@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:commons_core/arguments/arguments.dart';
+import 'package:commons_media_validation/domain/model/media_validation.dart';
 import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:commons_navigation/route/common_routes.dart';
 import 'package:design_system_components/appbar/appbar.dart';
@@ -7,6 +9,7 @@ import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sh
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.props.dart';
 import 'package:design_system_core/token/ds_tokens_provider.dart';
 import 'package:features_reset_password/presentation/forms/username/widget/reset_password_forms_username_widget.dart';
+import 'package:features_reset_password/presentation/forms/verify_code/widget/reset_password_forms_verify_code_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +78,18 @@ class _ResetPasswordFormsWidget extends State<ResetPasswordFormsWidget> {
                                         showBottomSheetError: (DSFeedbackBottomSheetProps props) {
                                           widget.showBannerError(context, props);
                                         },
+                                    ),
+                                    settings: const RouteSettings()
+                                );
+                              case CommonRoutes.resetPasswordVerifyCodeRoute:
+                                setCurrentPageProgress(currentPage + 1);
+                                return _getPageRoute(
+                                    view: ResetPasswordFormsVerifyCodeWidget(
+                                      parentContext: context,
+                                      showBottomSheetError: (DSFeedbackBottomSheetProps props) {
+                                        widget.showBannerError(context, props);
+                                      },
+                                      mediaValidation: (settings.arguments as Arguments).value as MediaValidation,
                                     ),
                                     settings: const RouteSettings()
                                 );

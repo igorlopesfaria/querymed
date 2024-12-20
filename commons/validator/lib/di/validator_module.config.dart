@@ -20,6 +20,8 @@ import 'package:commons_validator/domain/usecase/validate_crm_usecase.dart'
     as _i1061;
 import 'package:commons_validator/domain/usecase/validate_email_usecase.dart'
     as _i294;
+import 'package:commons_validator/domain/usecase/validate_media_code.dart'
+    as _i842;
 import 'package:commons_validator/domain/usecase/validate_password_usecase.dart'
     as _i683;
 import 'package:commons_validator/domain/usecase/validate_phone_usecase.dart'
@@ -39,6 +41,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i842.ValidateMediaCodeUseCase>(
+        () => _i842.ValidateMediaCodeUseCase());
     gh.factory<_i196.IValidatorApiDataSource>(
         () => _i556.ValidatorApiDataSource(
               gh<_i361.Dio>(),

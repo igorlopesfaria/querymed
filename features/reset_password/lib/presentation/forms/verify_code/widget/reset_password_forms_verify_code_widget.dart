@@ -5,7 +5,6 @@ import 'package:design_system_components/button/button.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.dart';
 import 'package:design_system_components/text/text.dart';
 import 'package:design_system_components/textfield/code/textfield_code.widget.dart';
-import 'package:design_system_components/textfield/textfield.dart';
 import 'package:design_system_core/token/ds_tokens_provider.dart';
 import 'package:features_reset_password/presentation/forms/verify_code/bloc/reset_password_forms_verify_code_cubit.dart';
 import 'package:features_reset_password/presentation/forms/verify_code/bloc/reset_password_forms_verify_code_state.dart';
@@ -46,6 +45,9 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
                   context,
                   CommonRoutes.resetPasswordChangePasswordRoute
               );
+            }
+            else if(state is ResetPasswordFormsVerifyCodeBannerErrorState){
+              widget.showBottomSheetError(state.bottomSheetProps);
             }
           },
           builder: (context, state) {
@@ -88,10 +90,23 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
                             padding: EdgeInsets.only(top: _token.spacing.xs),
                             child: DSOneDigitTextFields(
                             onTextChanged: (String text) {
-                              // _cubit.codeControllerText.text = text;
-                              // _cubit.checkCode();
+                              _cubit.codeControllerText.text = text;
+                              _cubit.checkValidCode(widget.mediaValidation.token);
                             },
                           )),
+                         Visibility(visible: (state is ResetPasswordFormsVerifyCodeFieldErrorState && state.showText),
+                             child: Padding(
+                              padding: EdgeInsets.only(
+                              top: _token.spacing.xxs,
+                              left: _token.spacing.xs,
+                              right: _token.spacing.xs
+                              ),
+                              child: DSTextWidget(
+                                 text: ResetPasswordVerifyCodeStrings.errorField,
+                                 typographyColor: _token.color.danger,
+                                 typographyStyle: DSTypographyStyleType.t12Regular
+                             ))
+                         ),
                         ])
                       )
                     ),
@@ -109,10 +124,9 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
                                         text: ResetPasswordVerifyCodeStrings.next,
                                         showLoading: state is ResetPasswordFormsVerifyCodeLoadingState,
                                         onPressed: () {
-
-                                          // _cubit.checkCode();
+                                          _cubit.checkValidCode(widget.mediaValidation.token);
                                         },
-                                        state: (state is ResetPasswordFormsVerifyCodeValidState)? DSButtonState.enabled : DSButtonState.disabled,
+                                        state: (state is ResetPasswordFormsVerifyCodeInitState || state is ResetPasswordFormsVerifyCodeFieldErrorState)? DSButtonState.disabled : DSButtonState.enabled,
                                         type: DSButtonType.primary))),
                           ]),
                     ),

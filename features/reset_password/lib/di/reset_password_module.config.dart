@@ -11,8 +11,12 @@
 import 'package:commons_crash_report/i_crash_reporter.dart' as _i978;
 import 'package:commons_media_validation/domain/usecase/media_validation_get_token_usecase.dart'
     as _i303;
+import 'package:commons_media_validation/domain/usecase/media_validation_verify_code_usecase.dart'
+    as _i215;
 import 'package:commons_validator/domain/usecase/validate_crm_usecase.dart'
     as _i1061;
+import 'package:commons_validator/domain/usecase/validate_media_code.dart'
+    as _i842;
 import 'package:dio/dio.dart' as _i361;
 import 'package:features_reset_password/data/datasource/api/i_reset_password_api_datasource.dart'
     as _i655;
@@ -42,12 +46,15 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i803.ResetPasswordFormsVerifyCodeCubit>(
-        () => _i803.ResetPasswordFormsVerifyCodeCubit());
     gh.factory<_i32.ResetPasswordFormsUsernameCubit>(
         () => _i32.ResetPasswordFormsUsernameCubit(
               gh<_i1061.ValidateCrmUseCase>(),
               gh<_i303.MediaValidationGetTokenUseCase>(),
+            ));
+    gh.factory<_i803.ResetPasswordFormsVerifyCodeCubit>(
+        () => _i803.ResetPasswordFormsVerifyCodeCubit(
+              gh<_i215.MediaValidationVerifyCodeUseCase>(),
+              gh<_i842.ValidateMediaCodeUseCase>(),
             ));
     gh.factory<_i655.IResetPasswordApiDataSource>(
         () => _i477.ResetPasswordApiDataSource(

@@ -37,12 +37,9 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
           _reporter.recordError(exception, stackTrace: stacktrace,
             reason: "Unexpected ERROR on POST $ENDPOINT_MEDIA_VALIDATIONS",
           );
-          if (exception.response?.data?.errorData != null) {
-            throw DataApiBadResponseException(
-                code: ErrorApiResponse.fromJson(
-                    exception.response!.data.errorData
-                ).code
-            );
+          if (exception.response?.data != null) {
+            final error = ErrorApiResponse.fromJson(exception.response!.data);
+            throw DataApiBadResponseException(code: error.code);
           }
           throw DataApiException();
         default:
@@ -73,8 +70,8 @@ class MediaValidationApiDataSource implements IMediaValidationApiDataSource{
           _reporter.recordError(exception, stackTrace: stacktrace,
             reason: "Unexpected ERROR on POST $ENDPOINT_MEDIA_VALIDATIONS",
           );
-          if (exception.response?.data?.errorData != null) {
-            final error = ErrorApiResponse.fromJson(exception.response!.data.errorData);
+          if (exception.response?.data != null) {
+            final error = ErrorApiResponse.fromJson(exception.response!.data);
             throw DataApiBadResponseException(code: error.code);
           }
           throw DataApiException();

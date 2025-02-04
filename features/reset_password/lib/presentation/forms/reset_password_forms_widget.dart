@@ -8,6 +8,7 @@ import 'package:design_system_components/appbar/appbar.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.props.dart';
 import 'package:design_system_core/token/ds_tokens_provider.dart';
+import 'package:features_reset_password/presentation/forms/update_password/widget/reset_password_forms_update_widget.dart';
 import 'package:features_reset_password/presentation/forms/username/widget/reset_password_forms_username_widget.dart';
 import 'package:features_reset_password/presentation/forms/verify_code/widget/reset_password_forms_verify_code_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -93,7 +94,19 @@ class _ResetPasswordFormsWidget extends State<ResetPasswordFormsWidget> {
                                     ),
                                     settings: const RouteSettings()
                                 );
-                              default:
+                              case CommonRoutes.resetPasswordUpdateRoute:
+                                setCurrentPageProgress(currentPage + 1);
+                                return _getPageRoute(
+                                    view: ResetPasswordFormsUpdateWidget(
+                                      parentContext: context,
+                                      showBottomSheetError: (DSFeedbackBottomSheetProps props) {
+                                        widget.showBannerError(context, props);
+                                      },
+                                      mediaValidation: (settings.arguments as Arguments).value as MediaValidation,
+                                    ),
+                                    settings: const RouteSettings()
+                                );
+                                default:
                                 return _getPageRoute(
                                     view: Scaffold(body: Center(child: Text('No route defined for ${settings.name}'),),),
                                     settings: settings

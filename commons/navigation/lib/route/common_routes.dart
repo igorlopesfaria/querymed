@@ -8,7 +8,8 @@ class CommonRoutes {
     contractRoute,
     resetPasswordRoute,
     resetPasswordVerifyCodeRoute,
-    resetPasswordChangePasswordRoute
+    resetPasswordUpdateRoute,
+    resetPasswordSuccessRoute
   ];
 
   // force update
@@ -20,7 +21,11 @@ class CommonRoutes {
   static const String onboardingInitialRoute = '/onboarding/initial';
 
   //register
-  static const String registerInitialRoute = '/register/forms';
+  static const String registerInitialRoute = '/register/forms/';
+  static const String registerUsernameRoute = '/register/forms/name';
+  static const String registerPhoneRoute = '/register/forms/phone';
+  static const String registerEmailRoute = '/register/forms/email';
+  static const String registerPasswordRoute = '/register/forms/email';
   static const String registerSuccessRoute = '/register/success';
 
   //login
@@ -40,7 +45,8 @@ class CommonRoutes {
   static const String resetPasswordRoute = '/resetPassword';
   static const String resetPasswordUsernameRoute = '/resetPassword/username';
   static const String resetPasswordVerifyCodeRoute = '/resetPassword/verifyCode';
-  static const String resetPasswordChangePasswordRoute = '/resetPassword/password';
+  static const String resetPasswordUpdateRoute = '/resetPassword/update';
+  static const String resetPasswordSuccessRoute = '/resetPassword/success';
 
   static const String addressStateRoute = '/address/state';
 

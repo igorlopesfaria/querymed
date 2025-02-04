@@ -55,7 +55,6 @@ class ResetPasswordFormsVerifyCodeCubit extends Cubit<ResetPasswordFormsVerifyCo
             bottomSheetProps: getGenericBannerErrorProps()
         ));
         return;
-
       }
     }
   }

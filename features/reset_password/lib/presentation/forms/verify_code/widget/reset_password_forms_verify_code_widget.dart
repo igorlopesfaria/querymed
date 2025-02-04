@@ -40,13 +40,12 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
         value: _cubit,
         child: BlocConsumer<ResetPasswordFormsVerifyCodeCubit, ResetPasswordFormsVerifyCodeState>(
           listener: (BuildContext context, state) {
-            if(state is ResetPasswordFormsVerifyCodeSuccessState){
+            if(state is ResetPasswordFormsVerifyCodeSuccessState) {
               CommonNavigator.pushNamed(
                   widget.parentContext,
-                  CommonRoutes.resetPasswordChangePasswordRoute
+                  CommonRoutes.resetPasswordUpdateRoute
               );
-            }
-            else if(state is ResetPasswordFormsVerifyCodeBannerErrorState){
+            } else if(state is ResetPasswordFormsVerifyCodeBannerErrorState){
               widget.showBottomSheetError(state.bottomSheetProps);
             }
           },

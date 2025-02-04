@@ -52,6 +52,7 @@ dependencies:
   flutter_secure_storage: 9.2.2
   firebase_crashlytics: ^4.1.5
   local_auth: 2.3.0
+  flutter_plugin_android_lifecycle: ^2.0.0
 
 dev_dependencies:
   flutter_test:

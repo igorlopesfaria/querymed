@@ -37,7 +37,7 @@ class DSSelectListWidget extends StatelessWidget {
               side: BorderSide(color: _style.token.color.primary, width: 1),
             ),
             child: Container(
-              height: 53,
+              height: 48,
               decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: _style.token.color.white,

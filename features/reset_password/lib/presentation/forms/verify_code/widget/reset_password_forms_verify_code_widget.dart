@@ -40,9 +40,9 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
         value: _cubit,
         child: BlocConsumer<ResetPasswordFormsVerifyCodeCubit, ResetPasswordFormsVerifyCodeState>(
           listener: (BuildContext context, state) {
-            if(state is ResetPasswordFormsVerifyCodeValidState){
+            if(state is ResetPasswordFormsVerifyCodeSuccessState){
               CommonNavigator.pushNamed(
-                  context,
+                  widget.parentContext,
                   CommonRoutes.resetPasswordChangePasswordRoute
               );
             }
@@ -81,7 +81,7 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
                             ),
                             child: DSTextWidget(
                                 textAlign: TextAlign.start,
-                                text: ResetPasswordVerifyCodeStrings.description,
+                                text: ResetPasswordVerifyCodeStrings.description.replaceAll("%s", widget.mediaValidation.resource),
                                 typographyColor: _token.color.onSurfaceHigh,
                                 typographyStyle: DSTypographyStyleType.t14Regular
                             ),
@@ -91,7 +91,7 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
                             child: DSOneDigitTextFields(
                             onTextChanged: (String text) {
                               _cubit.codeControllerText.text = text;
-                              _cubit.checkValidCode(widget.mediaValidation.token);
+                              _cubit.checkFormatCode();
                             },
                           )),
                          Visibility(visible: (state is ResetPasswordFormsVerifyCodeFieldErrorState && state.showText),
@@ -124,7 +124,7 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
                                         text: ResetPasswordVerifyCodeStrings.next,
                                         showLoading: state is ResetPasswordFormsVerifyCodeLoadingState,
                                         onPressed: () {
-                                          _cubit.checkValidCode(widget.mediaValidation.token);
+                                          _cubit.validateCode(widget.mediaValidation.token);
                                         },
                                         state: (state is ResetPasswordFormsVerifyCodeInitState || state is ResetPasswordFormsVerifyCodeFieldErrorState)? DSButtonState.disabled : DSButtonState.enabled,
                                         type: DSButtonType.primary))),

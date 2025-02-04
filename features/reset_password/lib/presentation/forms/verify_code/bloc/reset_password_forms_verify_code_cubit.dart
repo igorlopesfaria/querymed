@@ -17,22 +17,28 @@ class ResetPasswordFormsVerifyCodeCubit extends Cubit<ResetPasswordFormsVerifyCo
 
   TextEditingController codeControllerText = TextEditingController(text: '');
 
-  MediaValidationVerifyCodeUseCase _verifyCodeUseCase;
-  ValidateMediaCodeUseCase _validateCodeUseCase;
+  final MediaValidationVerifyCodeUseCase _verifyCodeUseCase;
+  final ValidateMediaCodeUseCase _validateCodeUseCase;
 
-  Future checkValidCode(String token) async {
-    String code = codeControllerText.text;
+  Future checkFormatCode() async {
 
-    Result validate = await _validateCodeUseCase.invoke(code);
+    Result validate = await _validateCodeUseCase.invoke(codeControllerText.text);
     if(validate is Failure){
       emit(ResetPasswordFormsVerifyCodeFieldErrorState(showText: false));
       return;
-    }
-    emit(ResetPasswordFormsVerifyCodeLoadingState());
+    }    emit(ResetPasswordFormsVerifyCodeLoadingState());
 
-    switch(await _verifyCodeUseCase.invoke(code, token)) {
+
+
+    emit(ResetPasswordFormsVerifyCodeValidState());
+  }
+
+  Future validateCode(String token) async{
+
+    switch(await _verifyCodeUseCase.invoke(codeControllerText.text, token)) {
       case (Success _) : {
         emit(ResetPasswordFormsVerifyCodeSuccessState());
+        return;
       }
       case (Failure failure) when failure.exception is ConnectionException :{
         emit(ResetPasswordFormsVerifyCodeBannerErrorState(
@@ -52,6 +58,5 @@ class ResetPasswordFormsVerifyCodeCubit extends Cubit<ResetPasswordFormsVerifyCo
 
       }
     }
-
   }
 }

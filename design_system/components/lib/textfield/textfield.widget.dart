@@ -22,7 +22,7 @@ class DSTextFieldWidget extends StatefulWidget {
     Function(String)? onSubmitted,
     Function(String)? onTextChanged,
     TextCapitalization textCapitalization = TextCapitalization.none,
-    FocusNode? focusNode
+    FocusNode? focusNode,
   }) : props = DSTextFieldProps(
     hintText: hintText,
     autofocus: autofocus,
@@ -41,6 +41,7 @@ class DSTextFieldWidget extends StatefulWidget {
     onTextChanged: onTextChanged,
     textCapitalization: textCapitalization,
     maxLength: maxLength,
+    focusNode: focusNode, // Make sure focusNode is passed correctly
   );
 
   @override
@@ -51,8 +52,9 @@ class DSTextFieldWidget extends StatefulWidget {
 
 class _DSTextFiledWidget extends State<DSTextFieldWidget> {
   final style = DSTextFieldStyle();
-  
+
   late bool showPasswordText;
+
   @override
   void initState() {
     super.initState();
@@ -73,22 +75,20 @@ class _DSTextFiledWidget extends State<DSTextFieldWidget> {
       onChanged: (text) {
         widget.props.onTextChanged?.call(text);
       },
-      onTapOutside: (event) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
       textCapitalization: widget.props.textCapitalization,
       enabled: widget.props.enable,
       autofocus: widget.props.autofocus,
       controller: widget.props.controller,
       keyboardType: widget.props.keyboardType,
       style: TextStyle(
-          fontSize: style.token.text.t14Regular.fontSize,
-          fontFamily: style.token.text.t14Regular.fontFamily,
-          letterSpacing: style.token.text.t14Regular.letter,
-          fontWeight: style.token.text.t14Regular.fontWeight,
-          color: (widget.props.enable)
-              ? style.token.color.onSurfaceHigh
-              : style.token.color.onSurfaceLow),
+        fontSize: style.token.text.t14Regular.fontSize,
+        fontFamily: style.token.text.t14Regular.fontFamily,
+        letterSpacing: style.token.text.t14Regular.letter,
+        fontWeight: style.token.text.t14Regular.fontWeight,
+        color: widget.props.enable
+            ? style.token.color.onSurfaceHigh
+            : style.token.color.onSurfaceLow,
+      ),
       onSubmitted: widget.props.onSubmitted,
       cursorColor: style.cursorColor,
       obscureText: showPasswordText,
@@ -112,73 +112,47 @@ class _DSTextFiledWidget extends State<DSTextFieldWidget> {
           letterSpacing: style.token.text.t14Regular.letter,
           fontWeight: style.token.text.t14Regular.fontWeight,
           color: widget.props.messageError == null || widget.props.messageError == ''
-              ? style.token.color.onSurfaceLow : style.token.color.danger,
+              ? style.token.color.onSurfaceLow
+              : style.token.color.danger,
         ),
         contentPadding: EdgeInsets.only(
-            left: widget.props.textAlign == TextAlign.center? 3 : style.horizontalPadding,
-          right: widget.props.textAlign == TextAlign.center? 0 : style.horizontalPadding
+          left: widget.props.textAlign == TextAlign.center ? 3 : style.horizontalPadding,
+          right: widget.props.textAlign == TextAlign.center ? 0 : style.horizontalPadding,
         ),
         filled: true,
         fillColor: style.backgroundColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            style.borderRadius,
-          ),
+          borderRadius: BorderRadius.circular(style.borderRadius),
           borderSide: BorderSide(
             color: style.borderColor,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            style.borderRadius,
-          ),
-          borderSide: BorderSide(
-            color: style.borderColor,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            style.borderRadius,
-          ),
-          borderSide: BorderSide(color: style.borderColorError, width: 2),
-        ),
-        errorText: widget.props.messageError,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            style.borderRadius,
-          ),
-          borderSide: BorderSide(color: style.borderColorFocus, width: 2),
         ),
       ),
-      inputFormatters: (widget.props.isPassword == true)
+      inputFormatters: widget.props.isPassword == true
           ? [FilteringTextInputFormatter.deny(RegExp(r'\s'))]
           : style.getTextInputFormatter(
-              widget.props.typeMask ?? DSTextFieldMaskType.empty
-            ),
+        widget.props.typeMask ?? DSTextFieldMaskType.empty,
+      ),
     );
   }
 
   Widget? _setSuffixIcon(DSTextFieldStyle style, Icon? trailingIcon) {
     if (trailingIcon != null) {
       return GestureDetector(
-          child: trailingIcon,
-          onTap: () {
-            widget.props.trailingIconClick?.call();
-          });
+        child: trailingIcon,
+        onTap: widget.props.trailingIconClick,
+      );
     } else if (widget.props.isPassword == true) {
       return IconButton(
         icon: Icon(
           showPasswordText
               ? Icons.visibility_off_outlined
               : Icons.visibility_outlined,
-          color: widget.props.messageError == null ||
-                  widget.props.messageError == ''
+          color: widget.props.messageError == null || widget.props.messageError == ''
               ? style.token.color.primary
               : style.token.color.danger,
         ),
-        onPressed: () {
-          togglePasswordIcon();
-        },
+        onPressed: togglePasswordIcon,
       );
     } else {
       return null;

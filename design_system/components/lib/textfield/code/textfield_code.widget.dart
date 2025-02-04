@@ -39,17 +39,23 @@ class _DSOneDigitTextFieldsState extends State<DSOneDigitTextFields> {
   }
 
   void onChangedHandler(String value, int index) {
-    if (value.length == 1 && index < fieldCount - 1) {
-      // Request focus for the next field
-      FocusScope.of(context).requestFocus(focusNodes[index + 1]);
-    } else if (value.isEmpty && index > 0) {
-      // Request focus for the previous field if value is empty
-      FocusScope.of(context).requestFocus(focusNodes[index - 1]);
-    }
-
-    // Notify the concatenated value to the callback
+    // Concatenate values from all text fields
     final allText = controllers.map((controller) => controller.text).join();
     widget.onTextChanged(allText);
+
+    // Move to the next field if digit entered and it's not the last field
+    if (value.length == 1 && index < fieldCount - 1) {
+      // Use `WidgetsBinding` to delay focus change until after the UI builds
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).requestFocus(focusNodes[index + 1]);
+      });
+    }
+    // Move to the previous field if backspace is pressed
+    else if (value.isEmpty && index > 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+      });
+    }
   }
 
   @override
@@ -61,7 +67,7 @@ class _DSOneDigitTextFieldsState extends State<DSOneDigitTextFields> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0), // Small padding between fields
             child: DSTextFieldWidget(
               controller: controllers[index],
-              focusNode: focusNodes[index], // Ensure the focus node is passed
+              focusNode: focusNodes[index], // Ensure focusNode is passed correctly
               maxLength: 1,
               keyboardType: TextInputType.number,
               autofocus: index == 0, // Automatically focus the first field
@@ -70,7 +76,10 @@ class _DSOneDigitTextFieldsState extends State<DSOneDigitTextFields> {
                   ? TextInputAction.next
                   : TextInputAction.done, // Set 'done' for the last field
               onSubmitted: index < fieldCount - 1
-                  ? (_) => FocusScope.of(context).requestFocus(focusNodes[index + 1])
+                  ? (_) {
+                // Move focus to the next field on submit
+                FocusScope.of(context).requestFocus(focusNodes[index + 1]);
+              }
                   : null,
               textAlign: TextAlign.center,
             ),
@@ -80,4 +89,3 @@ class _DSOneDigitTextFieldsState extends State<DSOneDigitTextFields> {
     );
   }
 }
-

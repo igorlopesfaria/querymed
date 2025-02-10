@@ -17,6 +17,8 @@ import 'package:commons_validator/domain/usecase/validate_crm_usecase.dart'
     as _i1061;
 import 'package:commons_validator/domain/usecase/validate_media_code.dart'
     as _i842;
+import 'package:commons_validator/domain/usecase/validate_password_usecase.dart'
+    as _i683;
 import 'package:dio/dio.dart' as _i361;
 import 'package:features_reset_password/data/datasource/api/i_reset_password_api_datasource.dart'
     as _i655;
@@ -28,6 +30,8 @@ import 'package:features_reset_password/domain/repository/i_reset_password_repos
     as _i789;
 import 'package:features_reset_password/domain/usecase/update_password_usecase.dart'
     as _i971;
+import 'package:features_reset_password/presentation/forms/update_password/bloc/reset_password_forms_update_cubit.dart'
+    as _i1039;
 import 'package:features_reset_password/presentation/forms/username/bloc/reset_password_forms_username_cubit.dart'
     as _i32;
 import 'package:features_reset_password/presentation/forms/verify_code/bloc/reset_password_forms_verify_code_cubit.dart'
@@ -65,6 +69,11 @@ extension GetItInjectableX on _i174.GetIt {
         _i924.ResetPasswordRepository(gh<_i655.IResetPasswordApiDataSource>()));
     gh.factory<_i971.UpdatePasswordUseCase>(() =>
         _i971.UpdatePasswordUseCase(gh<_i789.IResetPasswordRepository>()));
+    gh.factory<_i1039.ResetPasswordFormsUpdateCubit>(
+        () => _i1039.ResetPasswordFormsUpdateCubit(
+              gh<_i971.UpdatePasswordUseCase>(),
+              gh<_i683.ValidatePasswordUseCase>(),
+            ));
     return this;
   }
 }

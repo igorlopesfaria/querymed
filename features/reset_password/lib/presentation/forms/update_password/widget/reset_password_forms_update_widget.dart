@@ -3,6 +3,7 @@ import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:commons_navigation/route/common_routes.dart';
 import 'package:design_system_components/button/button.dart';
 import 'package:design_system_components/feedback/bottomsheet/feedback_bottom_sheet.dart';
+import 'package:design_system_components/progress/screen/progress_screen.dart';
 import 'package:design_system_components/text/text.dart';
 import 'package:design_system_components/textfield/textfield.dart';
 import 'package:design_system_core/token/ds_tokens_provider.dart';
@@ -32,6 +33,7 @@ class ResetPasswordFormsUpdateWidget extends StatefulWidget {
 class _ResetPasswordFormsUpdateWidgetState extends State<ResetPasswordFormsUpdateWidget> {
   final _token = DSTokenProvider().provide();
   final _cubit = GetIt.I.get<ResetPasswordFormsUpdateCubit>();
+  late DSProgressScreenCallback _callbackReturn;
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +44,12 @@ class _ResetPasswordFormsUpdateWidgetState extends State<ResetPasswordFormsUpdat
         child: BlocConsumer<ResetPasswordFormsUpdateCubit, ResetPasswordFormsUpdateState>(
           listener: (BuildContext context, state) {
             if(state is ResetPasswordUpdateSuccessState){
-              CommonNavigator.pushNamed(
-                  widget.parentContext,
-                  CommonRoutes.resetPasswordSuccessRoute
-              );
+              _callbackReturn.finishProgress();
             }
             else if(state is ResetPasswordFormsUpdateBannerErrorState){
+              _callbackReturn.stopProgress();
               widget.showBottomSheetError(state.bottomSheetProps);
+
             }
           },
           builder: (context, state) {
@@ -69,7 +70,7 @@ class _ResetPasswordFormsUpdateWidgetState extends State<ResetPasswordFormsUpdat
                                         right: _token.spacing.xs
                                     ),
                                     child: DSTextWidget(
-                                        text: ResetPasswordVerifyCodeStrings.title,
+                                        text: ResetPasswordUpdateStrings.title,
                                         typographyColor: _token.color.onSurfaceHigh,
                                         typographyStyle: DSTypographyStyleType.t20Medium
                                     ),
@@ -82,28 +83,23 @@ class _ResetPasswordFormsUpdateWidgetState extends State<ResetPasswordFormsUpdat
                                     ),
                                     child: DSTextWidget(
                                         textAlign: TextAlign.start,
-                                        text: ResetPasswordVerifyCodeStrings.description.replaceAll("%s", widget.mediaValidation.resource),
+                                        text: ResetPasswordUpdateStrings.description.replaceAll("%s", widget.mediaValidation.resource),
                                         typographyColor: _token.color.onSurfaceHigh,
                                         typographyStyle: DSTypographyStyleType.t14Regular
                                     ),
                                   ),
                                   Padding(
-                                      padding: EdgeInsets.only(top: _token.spacing.xs),
+                                      padding: EdgeInsets.only(top: _token.spacing.xs, left: _token.spacing.xs, right: _token.spacing.xs),
                                       child: DSTextFieldWidget(
-                                        autofocus: true,
                                         controller: _cubit.passwordControllerText,
-                                        keyboardType: TextInputType.number,
-                                        typeMask: DSTextFieldMaskType.empty,
-                                        onTextChanged: (text) {
-                                          _cubit.checkPasswordFormat();
-                                        },
-                                        maxLength: 8,
-                                        hintText: ResetPasswordFormsUpdateStrings.newPassword,
+                                        hintText: ResetPasswordUpdateStrings.newPassword,
+                                        isPassword: true,
+                                        messageError:
+                                        (state is ResetPasswordFormsUpdateFieldErrorState)
+                                            ? ResetPasswordUpdateStrings.errorField
+                                            : null,
                                         textInputAction: TextInputAction.send,
-                                        onSubmitted: (_) {
-                                          _cubit.updatePassword(widget.mediaValidation.token);
-                                        },
-                                      )
+                                      ),
                                   ),
                                   Visibility(visible: (state is ResetPasswordFormsUpdateFieldErrorState && state.showText),
                                       child: Padding(
@@ -113,7 +109,7 @@ class _ResetPasswordFormsUpdateWidgetState extends State<ResetPasswordFormsUpdat
                                               right: _token.spacing.xs
                                           ),
                                           child: DSTextWidget(
-                                              text: ResetPasswordVerifyCodeStrings.errorField,
+                                              text: ResetPasswordUpdateStrings.errorField,
                                               typographyColor: _token.color.danger,
                                               typographyStyle: DSTypographyStyleType.t12Regular
                                           ))
@@ -132,10 +128,27 @@ class _ResetPasswordFormsUpdateWidgetState extends State<ResetPasswordFormsUpdat
                                 child: Padding(
                                     padding: EdgeInsets.all(_token.spacing.xs),
                                     child: DSButtonWidget(
-                                        text: ResetPasswordVerifyCodeStrings.next,
+                                        text: ResetPasswordUpdateStrings.next,
                                         showLoading: state is ResetPasswordFormsUpdateLoadingState,
                                         onPressed: () {
-                                          _cubit.updatePassword(widget.mediaValidation.token);
+                                          CommonNavigator.push(context,
+                                              DSProgressScreenWidget(
+                                                text: ResetPasswordUpdateStrings.updating,
+                                                callbackInitProgress: (DSProgressScreenCallback callback) {
+                                                  _cubit.updatePassword(widget.mediaValidation.token);
+                                                  _callbackReturn = callback;
+                                                },
+                                                callbackFinishProgress: () {
+                                                  CommonNavigator.pushNamed(
+                                                      widget.parentContext,
+                                                      CommonRoutes.loginDefaultRoute
+                                                  );
+                                                },
+                                                callbackStopProgress: () {
+                                                  CommonNavigator.pop(context);
+                                                },
+                                              ));
+
                                         },
                                         state: (state is ResetPasswordFormsUpdateInitState || state is ResetPasswordFormsUpdateFieldErrorState)? DSButtonState.disabled : DSButtonState.enabled,
                                         type: DSButtonType.primary))),

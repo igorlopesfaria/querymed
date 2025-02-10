@@ -1,3 +1,4 @@
+import 'package:commons_core/arguments/arguments.dart';
 import 'package:commons_media_validation/domain/model/media_validation.dart';
 import 'package:commons_navigation/navigator/common_navigator.dart';
 import 'package:commons_navigation/route/common_routes.dart';
@@ -42,9 +43,14 @@ class _ResetPasswordFormsVerifyCodeWidget extends State<ResetPasswordFormsVerify
           listener: (BuildContext context, state) {
             if(state is ResetPasswordFormsVerifyCodeSuccessState) {
               CommonNavigator.pushNamed(
-                  widget.parentContext,
-                  CommonRoutes.resetPasswordUpdateRoute
+                  context,
+                  CommonRoutes.resetPasswordUpdateRoute,
+                  arguments: Arguments(
+                      key: 'mediaValidator',
+                      value: widget.mediaValidation
+                  )
               );
+
             } else if(state is ResetPasswordFormsVerifyCodeBannerErrorState){
               widget.showBottomSheetError(state.bottomSheetProps);
             }
